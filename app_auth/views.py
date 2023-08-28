@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
-
+from django.contrib.auth.forms import UserCreationForm
 
 def my_login(request):
     main_page_url = reverse("main-page")
@@ -30,3 +30,19 @@ def my_logout(request):
     login_url = reverse("login")
     logout(request)
     return redirect(login_url)
+
+
+def my_register(request):
+    login_url = reverse("login")
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.save()
+            name = form.save()
+            surname = form.save()
+            return redirect(login_url)
+    else:
+        form = UserCreationForm()
+    context = {'form': form}
+    return render(request, 'app_auth/register.html', context)
